@@ -1,9 +1,11 @@
 import sys #бибоиотека отвечающая за завершение игры
+from time import sleep
 
 import pygame
 
 from settings import Settings
 from ship import Ship
+from game_stats import GameStats
 from bullet import Bullet
 from alien import Alien
 
@@ -19,6 +21,8 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
+        
+        self.stats = GameStats(self)
         
         self.ship = Ship(self)
 
@@ -84,8 +88,21 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
         self._check_bullet_alien_collisions()
-        
     
+
+    def _ship_hit(self):
+        """Обрабатывает столкновение корабля с пришельцем."""
+        self.stats.ships_left -= 1
+
+        self.aliens.empty()
+        self.bullets.empty()
+
+        self._create_fleet()
+        self.ship.center_ship()
+
+        sleep(0.5)
+
+
     def _check_bullet_alien_collisions(self):
         """Обработка коллизий снарядов c пришельцами."""
         collisions = pygame.sprite.groupcollide(
@@ -99,6 +116,8 @@ class AlienInvasion:
         """Обновляет позиции всех пришельцев во флоте."""
         self._check_fleet_edges()
         self.aliens.update()
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
     
 
     def _create_fleet(self):
