@@ -89,6 +89,7 @@ class AlienInvasion:
         """Запускает новую игру при нажатии кнопки Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            self.settings.initialize_dynamic_settings()
             self._start_game()
 
             pygame.mouse.set_visible(False)
@@ -145,7 +146,8 @@ class AlienInvasion:
             self.bullets, self.aliens, True, True)
         if not self.aliens:
             self.bullets.empty()
-            self._create_fleet()      
+            self._create_fleet()
+            self.settings.increase_speed()  
 
 
     def _update_aliens(self):
