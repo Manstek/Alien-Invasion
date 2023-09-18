@@ -28,11 +28,12 @@ class AlienInvasion:
         self.ship = Ship(self)
 
         self.bullets = pygame.sprite.Group()
+        
         self.aliens = pygame.sprite.Group()
-
         self._create_fleet()
 
-        self.play_button = Button(self, "Play")
+        self.buttons = pygame.sprite.Group()
+        self._create_buttons()
 
 
     def run_game(self):
@@ -85,6 +86,29 @@ class AlienInvasion:
             self.ship.moving_left = False
     
 
+    def _create_buttons(self):
+        """Создаёт игровые кнопки."""
+        self.play_button = Button(self, "Play")
+        
+        screen_rect = self.screen.get_rect()
+        self.play_button.rect.center = screen_rect.center
+        self.play_button._prep_msg("Play")
+        
+        self.buttons.add(self.play_button)
+
+        lvl_text = ('Lvl one', 'Lvl two', 'Lvl three')
+        indentation = 80
+        
+        for text in lvl_text:
+            button = Button(self, text)
+
+            button.rect.x = self.play_button.rect.x
+            button.rect.y = self.play_button.rect.bottom + self.play_button.height + lvl_text.index(text) * indentation
+
+            button._prep_msg(text)
+            self.buttons.add(button)
+
+
     def _check_play_button(self, mouse_pos):
         """Запускает новую игру при нажатии кнопки Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
@@ -93,7 +117,7 @@ class AlienInvasion:
             self._start_game()
 
             pygame.mouse.set_visible(False)
-    
+
 
     def _start_game(self):
         """Сбрасывает статистику, очищает группы пришельцев и патронов, запускает заново игру."""
@@ -220,7 +244,10 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
 
         if not self.stats.game_active:
-            self.play_button.draw_button()
+            self.screen.fill(self.settings.start_background)
+            # self.play_button.draw_button()
+            for button in self.buttons.sprites():
+                button.draw_button()
 
         pygame.display.flip()
 

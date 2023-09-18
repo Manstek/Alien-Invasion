@@ -4,11 +4,13 @@ class Settings():
     def __init__(self):
         self.screen_width = 1920
         self.screen_height = 1080
-        self.bg_color = (230,230,230)
+        self.bg_color = (230,230,230) # Lavender
+
+        self.start_background = (0 ,0, 0) # Black
         
         self.ship_limit = 3
 
-        self.bullet_width = 3000
+        self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
@@ -24,7 +26,7 @@ class Settings():
         """Инициализирует настройки, изменяющиеся в ходе игры."""
         self.ship_speed = 1.5
         self.bullet_speed = 3.0
-        self.alien_speed = 0.5
+        self.alien_speed = 0.3
 
         self.fleet_direction = 1 # 1 right, -1 left
     

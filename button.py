@@ -1,8 +1,11 @@
+import pygame
 import pygame.font
+from pygame.sprite import Sprite
 
-class Button():
+class Button(Sprite):
     def __init__(self, ai_game, msg):
         """Инициализирует атрибуты кнопки."""
+        super().__init__()
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
 
@@ -12,9 +15,6 @@ class Button():
         self.font = pygame.font.SysFont(None, 48)
 
         self.rect = pygame.Rect(0, 0, self.width, self.height)
-        self.rect.center = self.screen_rect.center
-
-        self._prep_msg(msg)
 
 
     def _prep_msg(self, msg):
