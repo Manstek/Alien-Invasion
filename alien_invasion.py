@@ -61,6 +61,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_lvl_buttons(mouse_pos)
 
 
     def _check_keydown_events(self, event):
@@ -93,8 +94,6 @@ class AlienInvasion:
         screen_rect = self.screen.get_rect()
         self.play_button.rect.center = screen_rect.center
         self.play_button._prep_msg("Play")
-        
-        self.buttons.add(self.play_button)
 
         lvl_text = ('Lvl one', 'Lvl two', 'Lvl three')
         indentation = 80
@@ -117,7 +116,26 @@ class AlienInvasion:
             self._start_game()
 
             pygame.mouse.set_visible(False)
+    
 
+    def _check_lvl_buttons(self, mouse_pos):
+        """Проверяет нажатие кнопок уровня и увеличивает скорость игры."""
+        for index, button in enumerate(self.buttons.sprites()):
+            buton_clicked = button.rect.collidepoint(mouse_pos)
+            if buton_clicked:
+                if index == 0:
+                    self.settings.initialize_dynamic_settings()
+                    self.settings.speedup_scale = 1.5
+                    self._start_game()
+                elif index == 1:
+                    self.settings.initialize_dynamic_settings()
+                    self.settings.speedup_scale = 2
+                    self._start_game()
+                elif index == 2:
+                    self.settings.initialize_dynamic_settings()
+                    self.settings.speedup_scale = 2.5
+                    self._start_game()
+            
 
     def _start_game(self):
         """Сбрасывает статистику, очищает группы пришельцев и патронов, запускает заново игру."""
@@ -245,7 +263,7 @@ class AlienInvasion:
 
         if not self.stats.game_active:
             self.screen.fill(self.settings.start_background)
-            # self.play_button.draw_button()
+            self.play_button.draw_button()
             for button in self.buttons.sprites():
                 button.draw_button()
 

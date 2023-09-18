@@ -8,9 +8,9 @@ class Settings():
 
         self.start_background = (0 ,0, 0) # Black
         
-        self.ship_limit = 3
+        self.ship_limit = 300
 
-        self.bullet_width = 3
+        self.bullet_width = 3000
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
